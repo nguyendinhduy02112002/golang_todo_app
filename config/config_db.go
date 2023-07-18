@@ -9,10 +9,10 @@ import (
 )
 
 const (
-	username = "todos"
+	username = "root"
 	password = "secret"
 	hostname = "localhost:3306"
-	dbname   = "todo_db"
+	dbname   = "todos"
 )
 
 type MySQLInstance struct {

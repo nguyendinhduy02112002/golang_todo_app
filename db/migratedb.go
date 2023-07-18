@@ -9,7 +9,7 @@ import (
 )
 
 func MigrateDB() {
-	_, err := config.MI.DB.Exec("USE todo_db")
+	_, err := config.MI.DB.Exec("USE todos")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -28,7 +28,7 @@ func MigrateDB() {
 			continue
 		}
 
-		// Gửi dữ liệu đến Elasticsearch
+		// Send data to Elasticsearch
 		doc := map[string]interface{}{
 			"id":    id,
 			"title": title,
