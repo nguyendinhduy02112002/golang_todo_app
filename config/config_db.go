@@ -5,12 +5,14 @@ import (
 	"fmt"
 	"log"
 
-	_ "github.com/go-sql-driver/mysql"
+	"github.com/go-sql-driver/mysql"
+	_ "go.elastic.co/apm"
+	"go.elastic.co/apm/module/apmsql"
 )
 
 const (
 	username = "root"
-	password = "secret"
+	password = "root"
 	hostname = "localhost:3306"
 	dbname   = "todos"
 )
@@ -26,10 +28,14 @@ func dsn(dbName string) string {
 }
 
 func ConnectDB() {
-	db, err := sql.Open("mysql", dsn(""))
+	apmDriver := apmsql.Wrap(&mysql.MySQLDriver{})
+	apmsql.Register("mysql", apmDriver)
+	db, err := apmsql.Open("mysql", dsn(""))
 	if err != nil {
+		fmt.Printf("error set agent: %s", err)
 		panic(err.Error())
 	}
+
 	err = db.Ping()
 	if err != nil {
 		log.Fatal(err)
